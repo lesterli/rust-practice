@@ -8,6 +8,15 @@ fn main() {
     b = 3;
     println!("b was changed: {}", b);
     
+    // 变量遮蔽：连续定义同名变量
+    let s = "Hello Rust";
+    let s = "Hello World";
+    // 变量生命周期，词法作用域
+    {
+        let s = "Hello Rust";
+    }
+    println!("s is {}", s);
+
     pub fn tmp() -> i32 {
         return 1;
     }
