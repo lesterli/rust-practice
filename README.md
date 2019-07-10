@@ -24,5 +24,7 @@ Rust一切皆表达式。
 
 ## [Rust数据类型]()
 
+### 练习代码
+
 * [Rust原始类型](https://github.com/lesterli/rust-practice/blob/master/src/primitives.rs)
 * [Rust集合类型](https://github.com/lesterli/rust-practice/blob/master/src/collections.rs)
