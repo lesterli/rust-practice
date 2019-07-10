@@ -21,3 +21,8 @@ Rust一切皆表达式。
 * [Rust变量](https://github.com/lesterli/rust-practice/blob/master/src/variable.rs)
 * [Rust函数](https://github.com/lesterli/rust-practice/blob/master/src/function.rs)
 * [Rust流程控制](https://github.com/lesterli/rust-practice/blob/master/src/control_flow.rs)
+
+## [Rust数据类型]()
+
+* [Rust原始类型](https://github.com/lesterli/rust-practice/blob/master/src/primitives.rs)
+* [Rust集合类型](https://github.com/lesterli/rust-practice/blob/master/src/collections.rs)
