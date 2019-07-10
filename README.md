@@ -9,7 +9,7 @@ Rust代码非常接近自然语言。
 5.times(|| println!("Hello Rust"));
 2.days().from_now();
 ```
-## [Rust语法]()
+## [Rust语法](https://mp.weixin.qq.com/s?__biz=MzA5NTQyNDIyNw==&mid=2247483778&idx=1&sn=52c655fb8bbc81eaaa0ce2acc1c9d07f)
 
 Rust一切皆表达式。
 
