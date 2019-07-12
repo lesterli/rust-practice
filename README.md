@@ -99,6 +99,6 @@ enum Result<T, E> {
 
 ### 练习代码
 
-* [Rust类型系统]()
+* [Rust类型系统](https://github.com/lesterli/rust-practice/blob/master/src/generics_trait.rs)
 * [Rust所有权系统]()
 * [Rust并发]()
