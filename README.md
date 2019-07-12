@@ -39,7 +39,7 @@ Rust原始的字符串类型：`str`，它是固定长度的。
 * [Rust原始类型](https://github.com/lesterli/rust-practice/blob/master/src/primitives.rs)
 * [Rust集合类型](https://github.com/lesterli/rust-practice/blob/master/src/collections.rs)
 
-## [Rust核心概念]()
+## [Rust核心概念](https://mp.weixin.qq.com/s?__biz=MzA5NTQyNDIyNw==&mid=2247483787&idx=1&sn=a4cfc40e7ae380cbb2d7bf091d71a4ec)
 
 ### 类型系统
 
