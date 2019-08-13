@@ -1,6 +1,6 @@
 # Rust语言学习笔记
 
-## [Rust概述](https://mp.weixin.qq.com/s?__biz=MzA5NTQyNDIyNw==&mid=2247483774&idx=1&sn=0f76ebdaf945da8f28c7753d9fd4399a)
+## [Rust概述](https://mp.weixin.qq.com/s/raM8bpGFIukWVNcR2G4pmw)
 
 摘录片段：
 Rust代码非常接近自然语言。
@@ -9,7 +9,7 @@ Rust代码非常接近自然语言。
 5.times(|| println!("Hello Rust"));
 2.days().from_now();
 ```
-## [Rust基本语法](https://mp.weixin.qq.com/s?__biz=MzA5NTQyNDIyNw==&mid=2247483778&idx=1&sn=52c655fb8bbc81eaaa0ce2acc1c9d07f)
+## [Rust基本语法](https://mp.weixin.qq.com/s/okwXAj6eqB31R5mYmaqKZQ)
 
 Rust一切皆表达式。
 
@@ -34,7 +34,7 @@ Rust一切皆表达式。
 * [Rust函数](https://github.com/lesterli/rust-practice/blob/master/src/function.rs)
 * [Rust流程控制](https://github.com/lesterli/rust-practice/blob/master/src/control_flow.rs)
 
-## [Rust数据类型](https://mp.weixin.qq.com/s?__biz=MzA5NTQyNDIyNw==&mid=2247483783&idx=1&sn=8625be095bdcc56758136cd837e5b107)
+## [Rust数据类型](https://mp.weixin.qq.com/s/wSqRC-h-RsiNbUuPNVaLMw)
 
 利用元组，函数可以返回多个值。
 
@@ -51,7 +51,7 @@ Rust原始的字符串类型：`str`，它是固定长度的。
 * [Rust原始类型](https://github.com/lesterli/rust-practice/blob/master/src/primitives.rs)
 * [Rust集合类型](https://github.com/lesterli/rust-practice/blob/master/src/collections.rs)
 
-## [Rust核心概念](https://mp.weixin.qq.com/s?__biz=MzA5NTQyNDIyNw==&mid=2247483787&idx=1&sn=a4cfc40e7ae380cbb2d7bf091d71a4ec)
+## [Rust核心概念](https://mp.weixin.qq.com/s/BqtbSUkOZ-DSbv3Mt2UdrQ)
 
 ### 类型系统
 
