@@ -1,7 +1,18 @@
 use std:: collections::HashMap;
 
-fn main() {
-    // vector
+// 统计一些文本中每一个单词分别出现了多少次
+fn count_word() {
+    let text = "hello world wonderful world";
+    let mut map = HashMap::new();
+
+    for word in text.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
+    println!("count {:?}", map);
+}
+
+fn vector_example() {
     let v: Vec<i32> = Vec::new();
     println!("vec size {}", v.len());
     let mut v = Vec::new();
@@ -12,8 +23,9 @@ fn main() {
     for i in &v {
         println!("vec each item {}", i);
     }
+}
 
-    // HashMap<K, V>
+fn hashmap_example() {
     let mut hmap = HashMap::new();
     hmap.insert("one", 1);
     hmap.insert("one", 2);
@@ -25,22 +37,28 @@ fn main() {
         println!("insert {}", val);
     }
     println!("after insert hashmap {:?}", hmap);
+}
 
-    // 字符串
-    let mut s = String::from("string");
+fn string_example() {
+    let mut s = String::from("str");
     s.push_str("add");
     println!("s {}", s);
     for c in s.chars() {
         println!("char {}", c);
     }
+}
 
-    // 统计一些文本中每一个单词分别出现了多少次
-    let text = "hello world wonderful world";
-    let mut map = HashMap::new();
+fn overlap() {
+    let a = [1, 2, 3];
+    let b = [1, 2, 3, 4];
 
-    for word in text.split_whitespace() {
-        let count = map.entry(word).or_insert(0);
-        *count += 1;
-    }
-    println!("count {:?}", map);
+    let mut c: Vec<i32> = a.iter().zip(&b).map(|(a, b)| a & b).collect();
+    println!("overlap {:?}", c);    
+}
+fn main() {
+    vector_example();
+    hashmap_example();
+    string_example();
+    count_word();
+    overlap();
 }
