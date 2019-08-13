@@ -29,10 +29,10 @@ Rust一切皆表达式。
 
 ### 练习代码
 
-* [Rust表达式](https://github.com/lesterli/rust-practice/blob/master/src/statement.rs)
-* [Rust变量](https://github.com/lesterli/rust-practice/blob/master/src/variable.rs)
-* [Rust函数](https://github.com/lesterli/rust-practice/blob/master/src/function.rs)
-* [Rust流程控制](https://github.com/lesterli/rust-practice/blob/master/src/control_flow.rs)
+* [Rust表达式](https://github.com/lesterli/rust-practice/blob/master/simple/src/statement.rs)
+* [Rust变量](https://github.com/lesterli/rust-practice/blob/master/simple/src/variable.rs)
+* [Rust函数](https://github.com/lesterli/rust-practice/blob/master/simple/src/function.rs)
+* [Rust流程控制](https://github.com/lesterli/rust-practice/blob/master/simple/src/control_flow.rs)
 
 ## [Rust数据类型](https://mp.weixin.qq.com/s/wSqRC-h-RsiNbUuPNVaLMw)
 
@@ -48,8 +48,8 @@ Rust原始的字符串类型：`str`，它是固定长度的。
 
 ### 练习代码
 
-* [Rust原始类型](https://github.com/lesterli/rust-practice/blob/master/src/primitives.rs)
-* [Rust集合类型](https://github.com/lesterli/rust-practice/blob/master/src/collections.rs)
+* [Rust原始类型](https://github.com/lesterli/rust-practice/blob/master/simple/src/primitives.rs)
+* [Rust集合类型](https://github.com/lesterli/rust-practice/blob/master/simple/src/collections.rs)
 
 ## [Rust核心概念](https://mp.weixin.qq.com/s/BqtbSUkOZ-DSbv3Mt2UdrQ)
 
@@ -111,6 +111,6 @@ enum Result<T, E> {
 
 ### 练习代码
 
-* [Rust类型系统](https://github.com/lesterli/rust-practice/blob/master/src/generics_trait.rs)
+* [Rust类型系统](https://github.com/lesterli/rust-practice/blob/master/simple/src/generics_trait.rs)
 * [Rust所有权系统]()
 * [Rust并发]()
