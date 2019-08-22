@@ -52,13 +52,30 @@ fn overlap() {
     let a = [1, 2, 3];
     let b = [1, 2, 3, 4];
 
-    let mut c: Vec<i32> = a.iter().zip(&b).map(|(a, b)| a & b).collect();
+    let c: Vec<i32> = a.iter().zip(&b).map(|(a, b)| a & b).collect();
     println!("overlap {:?}", c);    
 }
+
+fn bunch_of_numbers() -> Vec<u32> {
+    (0..10).collect()
+}
+
+fn new_vector_example() {
+    let nums = bunch_of_numbers();
+
+    match nums.last() {
+        Some(&0) => println!("Last number is zero"),
+        Some(n) => println!("Last number is {}", n),
+        None => println!("There are no numbers"),
+    }
+}
+
 fn main() {
     vector_example();
     hashmap_example();
     string_example();
     count_word();
     overlap();
+    new_vector_example();
+
 }
