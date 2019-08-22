@@ -70,6 +70,15 @@ fn new_vector_example() {
     }
 }
 
+fn slices_example() {
+    let mut foo = [0u8; 5];
+    foo[1] = 1;
+    foo[2] = 2;
+
+    let bar = &foo[..3];
+    println!("{:?}", bar);
+}
+
 fn main() {
     vector_example();
     hashmap_example();
@@ -77,5 +86,5 @@ fn main() {
     count_word();
     overlap();
     new_vector_example();
-
+    slices_example();
 }
