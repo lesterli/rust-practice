@@ -1,5 +1,7 @@
 # Rust语言学习笔记
 
+## [Rust语言精简手册](https://lester123.gitbook.io/rust/)
+
 ## [Rust概述](https://mp.weixin.qq.com/s/raM8bpGFIukWVNcR2G4pmw)
 
 摘录片段：
