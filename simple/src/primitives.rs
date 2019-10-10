@@ -69,9 +69,30 @@ fn enum_example() {
     }
 }
 
+fn basic_example() {
+    // 布尔类型
+    let a_boolean: bool = true;
+
+    // 数值类型
+    let a_float: f32 = 1.0;  // 变量常规声明
+    let an_integer   = 6i16; // 变量后缀声明
+
+    // 可根据上下文自动推断类型
+    let mut inferred_type = 8; // 根据下一行的赋值推断为i64类型
+    inferred_type = 64i64;
+
+    // 无法类型推断时，按默认方式取类型
+    let default_float   = 2.0; // 浮点数值为f64
+    let default_integer = 5;   // 整型数值为i32
+
+    // 字符类型
+    let a_char: char = 'a';
+}
+
 fn main() {
     array_example();
     tuple_example();
     struct_example();
     enum_example();
+    basic_example();
 }
