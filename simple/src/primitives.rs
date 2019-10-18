@@ -19,8 +19,20 @@ fn array_example () {
     array[2] = 2;
 
     assert_eq!([1, 2], &array[1..]);
+    // 元素个数小于等于32的数组，实现了`trait IntoIterator`
     // 这个循环输出: 0 1 2
     for x in &array {
+        print!("{} ", x);
+    }
+    println!();
+
+    let array: [i32; 33] = [0; 33];
+    // error[E0277]: `&[i32; 33]` is not an iterator
+//    for x in &array {
+//        print!("{} ", x);
+//    }
+    // 通过调用slice方法将数组强制类型转换为slice
+    for x in array.iter() {
         print!("{} ", x);
     }
     println!();
