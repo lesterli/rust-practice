@@ -1,11 +1,29 @@
 fn array_example () {
+
+    // 创建数组方式一：[x, y, z]
     let arr: [i32; 3] = [1, 2, 3];
-    let num = arr[2];
     let mut mut_arr = [4, 5, 6];
     mut_arr[0] = 0;
-    println!("array's size {}", arr.len());
-    println!("last element in array {}", num);
-    println!("first element in array {}", mut_arr[0]);
+
+    assert_eq!(3, arr[2]);
+    assert_eq!(0, mut_arr[0]);
+    // 这个循环输出: 1 2 3
+    for x in &arr {
+        print!("{} ", x);
+    }
+    println!();
+
+    // 创建数组方式二：[x; N]
+    let mut array: [i32; 3] = [0; 3];
+    array[1] = 1;
+    array[2] = 2;
+
+    assert_eq!([1, 2], &array[1..]);
+    // 这个循环输出: 0 1 2
+    for x in &array {
+        print!("{} ", x);
+    }
+    println!();
 }
 
 fn tuple_example() {
