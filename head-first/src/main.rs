@@ -1,3 +1,6 @@
+mod clap_example;
+use clap_example::example;
+
 fn main() {
-    println!("Hello, world!");
+    example();
 }

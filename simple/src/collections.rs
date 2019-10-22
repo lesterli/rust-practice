@@ -1,4 +1,4 @@
-use std:: collections::HashMap;
+use std::collections::HashMap;
 
 // 统计一些文本中每一个单词分别出现了多少次
 fn count_word() {
