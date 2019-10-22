@@ -1,0 +1,5 @@
+[package]
+name = "head-first"
+version = "0.1.0"
+authors = ["lesterli <lester123@live.cn>"]
+edition = "2018"
