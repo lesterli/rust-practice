@@ -1,4 +1,42 @@
+const INT1: i32 = 1;
+const BIT2: u32 = 1 << 1;
+const STRING: &'static str = "String";
+
+static RUST: &'static str = "Rust";
+static mut MUT_INT: i32 = 1;
+
+#[derive(Debug)]
+struct BitString<'a> {
+    mybit: u32,
+    mystring: &'a str,
+}
+
+const BIT_STRING: BitString<'static> = BitString {
+    mybit: BIT2,
+    mystring: STRING,
+};
+
+fn is_big(n: i32) -> bool {
+    // 在一般函数中访问常量
+    n > INT1
+}
+
 fn main() {
+    // 在 main 函数中访问常量
+    println!("{:?}", INT1);
+    println!("{:?}", BIT2);
+    println!("{:?}", STRING);
+    println!("{:#?}", BIT_STRING);
+
+    // 报错！不能修改一个 `const` 常量
+    INT1 = 5;
+    let n = 4;
+    println!("{} is {}", n, if is_big(n) { "big" } else { "small" });
+
+
+    MUT_INT = 5;
+
+
     let a = 1;
     // 默认不可变绑定，不能重新赋值
     // a = 2;
