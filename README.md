@@ -115,4 +115,4 @@ enum Result<T, E> {
 
 * [Rust类型系统](https://github.com/lesterli/rust-practice/blob/master/simple/src/generics_trait.rs)
 * [Rust所有权系统]()
-* [Rust并发]()
+* [Rust并发](https://github.com/lesterli/rust-practice/blob/master/head-first/std-marker/example_Send_Sync.rs)
