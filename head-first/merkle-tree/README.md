@@ -2,10 +2,12 @@
 
 The implementation of Merkle Tree in Rust.
 
-This tree is stored in a vector.
+This tree is stored in a vector. 
 
 For example, there are four items, merkle tree is kept like: 
 [hash0,hash1,hash2,hash3,hash01,hash23,root]
+
+While building a tree, if there is an odd number of nodes at the given level, the last node will be duplicated.
 
 ## Usage example
 
