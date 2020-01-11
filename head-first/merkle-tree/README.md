@@ -10,14 +10,18 @@ For example, there are four items, merkle tree is kept like:
 ## Usage example
 
 ```Rust
-use ring::digest::{Algorithm, Context, Digest, SHA512};
+extern crate ring;
+
+use ring::digest::{Algorithm, SHA512};
 use merkle_tree::MerkleTree;
 
 static ALGO: &'static Algorithm = &SHA512;
 
-let values = vec!["one", "two", "three", "four"];
-let tree = MerkleTree::new(&values, ALGO);
-let proof = tree.build_proof(&"one");
-let vec = proof.unwrap();
-tree.validate(&vec);
+fn main() {
+    let values = vec!["one", "two", "three", "four"];
+    let tree = MerkleTree::new(&values, ALGO);
+    let proof = tree.build_proof(&"one");
+    let vec = proof.unwrap();
+    tree.validate(&vec);
+}
 ```
