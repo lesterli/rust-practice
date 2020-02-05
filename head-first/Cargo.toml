@@ -6,3 +6,6 @@ edition = "2018"
 
 [dependencies]
 clap = "2.33.0"
+ring = "0.16.9"
+
+merkle_tree = { package = "merkle_tree", path = "merkle-tree" }

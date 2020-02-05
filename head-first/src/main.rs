@@ -56,22 +56,36 @@
 //    foo(&cell);
 //    cell.set(new_value); // oops, we clobbered the work done by foo
 
-use std::thread;
-use std::time::Duration;
+// use std::thread;
+// use std::time::Duration;
+
+// fn main() {
+//     let t = thread::Builder::new()
+//         .name("child1".to_string())
+//         .spawn(move || {
+//             println!("enter child thread.");
+//             thread::park();
+//             println!("resume child thread");
+//         }).unwrap();
+//     println!("spawn a thread");
+//     thread::sleep(Duration::new(5,0));
+//     t.thread().unpark();
+//     t.join();
+//     println!("child thread finished");
+// }
+extern crate ring;
+
+use ring::digest::{Algorithm, SHA512};
+use merkle_tree::MerkleTree;
+
+static ALGO: &'static Algorithm = &SHA512;
 
 fn main() {
-    let t = thread::Builder::new()
-        .name("child1".to_string())
-        .spawn(move || {
-            println!("enter child thread.");
-            thread::park();
-            println!("resume child thread");
-        }).unwrap();
-    println!("spawn a thread");
-    thread::sleep(Duration::new(5,0));
-    t.thread().unpark();
-    t.join();
-    println!("child thread finished");
+    let values = vec!["one", "two", "three", "four"];
+    let tree = MerkleTree::new(&values, ALGO);
+    let proof = tree.build_proof(&"one");
+    let vec = proof.unwrap();
+    tree.validate(&vec);
 }
 
 
