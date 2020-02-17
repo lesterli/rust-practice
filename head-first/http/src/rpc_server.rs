@@ -1,7 +1,9 @@
 use std::net::SocketAddr;
+use std::io;
 
-use jsonrpc_core::{Error, ErrorCode, IoHandler, Params, Value};
+use jsonrpc_core::{Error, ErrorCode, IoHandler, Params, Value, Result};
 use jsonrpc_http_server::{Server, ServerBuilder, RestApi};
+use jsonrpc_derive::rpc;
 
 pub struct RpcServer {
 	pub uri: String,
@@ -57,4 +59,35 @@ pub fn rpc_handler() -> IoHandler {
 	});
 
 	io
+}
+
+/// Maximal payload accepted by RPC servers.
+const MAX_PAYLOAD: usize = 15 * 1024 * 1024;
+
+/// Type alias for http server
+pub type HttpServer = Server;
+
+/// The RPC IoHandler containing all requested APIs.
+pub type RpcHandler = IoHandler;
+
+/// Start HTTP server listening on given address.
+///
+/// **Note**: Only available if `not(target_os = "unknown")`.
+pub fn start_http(
+	addr: &std::net::SocketAddr,
+	io: RpcHandler,
+) -> io::Result<Server> {
+	ServerBuilder::new(io)
+		//.threads(4)
+		.rest_api(RestApi::Unsecure)
+		.max_request_body_size(MAX_PAYLOAD)
+		.start_http(addr)
+}
+
+/// API
+#[rpc]
+pub trait Rpc {
+	/// Adds two numbers and returns a result
+	#[rpc(name = "add")]
+	fn add(&self, a: u64, b: u64) -> Result<u64>;
 }
