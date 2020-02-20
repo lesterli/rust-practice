@@ -72,9 +72,40 @@ fn example3() {
 	fut.wait().unwrap();  
 }
 
+fn example1() {
+    // init RPC server
+    let server_details = "0.0.0.0:15678";
+    let socket_addr: SocketAddr = server_details.parse().unwrap();
+    let mut handler = rpc_server::rpc_handler();
+    let new_server = rpc_server::start_http(&socket_addr, handler);
+    let server_uri = format!("http://{}", socket_addr);
+
+    let (tx, rx) = std::sync::mpsc::channel();
+
+    // create connect
+    let run = http::connect(&server_uri)
+        .and_then(|client: rpc_client::RpcClient| {
+            client.hello("http rpc").and_then(move |result| {
+                drop(client);
+                let _ = tx.send(result);
+                Ok(())
+            })
+        })
+        .map_err(|e| println!("RPC Client error: {:?}", e));
+
+    rt::run(run);
+
+    // get response
+    let result = rx.recv_timeout(Duration::from_secs(3)).unwrap();
+    assert_eq!("hello http rpc", result);
+    println!("RPC Client example1: {:?}", result);
+}
+
 fn main() {
     // example
     example();
+
+    example1();
 
     // example
     example2();
