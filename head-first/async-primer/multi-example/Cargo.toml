@@ -1,0 +1,8 @@
+[package]
+name = "multi-example"
+version = "0.1.0"
+authors = ["lesterli <lester123@live.cn>"]
+edition = "2018"
+
+[dependencies]
+lazy_static = "1.4.0"
