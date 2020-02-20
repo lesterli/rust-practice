@@ -36,18 +36,45 @@ fn main() -> io::Result<()> {
     let mut rf2: bool = false;
 
     loop {
-        let r1 = FILE1.read().unwrap();
-        let r2 = FILE2.read().unwrap();
+        // read()
+        // let r1 = FILE1.read().unwrap();
+        // let r2 = FILE2.read().unwrap();
 
-        if *r1 != String::from("") && rf1 == false {
-            println!("completed file 1");
-            rf1 = true;
+        // if *r1 != String::from("") && rf1 == false {
+        //     println!("completed file 1");
+        //     rf1 = true;
+        // }
+
+        // if *r2 != String::from("") && rf2 == false {
+        //     println!("completed file 2");
+        //     rf2 = true;
+        // }
+
+        // try_read()
+        let r1 = FILE1.try_read();
+        let r2 = FILE2.try_read();
+        
+        match r1 {
+            Ok(v) => {
+                if *v != String::from("") && rf1 == false {
+                    println!("completed file 1");
+                    rf1 = true;
+                }
+            }
+            // If rwlock can't be acquired, ignore the error
+            Err(_) => {}
         }
 
-        if *r2 != String::from("") && rf2 == false {
-            println!("completed file 2");
-            rf2 = true;
-        }
+        match r2 {
+            Ok(v) => {
+                if *v != String::from("") && rf2 == false {
+                    println!("completed file 2");
+                    rf2 = true;
+                }
+            }
+            // If rwlock can't be acquired, ignore the error
+            Err(_) => {}
+        }        
     }
 
     Ok(())
