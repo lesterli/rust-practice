@@ -12,22 +12,19 @@
 //00000020: 73 65 74 00 67 6f 00 54 45 52 4d 5f 50 52 4f 0a  set.go.TERM_PRO.
 //00000030: 67 6f 00 54 45 52 4d 5f 50 52 4f 47 52 41 4d 0a  go.TERM_PROGRAM.
 
-#include <stdio.h> // for printf
+#include <stdio.h> // printf
+#include <ctype.h> // toupper
 
 int main(int argc, char **argv) {
-    for (int i = 0; i < argc; i++) {
+    // start from 1, skips program name
+    for (int i = 1; i < argc; i++) {
         char *arg = argv[i];
-        // note: the loop condition is gone, we just loop forever.
-        // well, until a 'break' at least.
         for (int j = 0;; j++) {
             char character = arg[j];
-            // technically, we ought to use '\0' rather than just 0,
-            // but even `gcc -Wall -Wextra -Wpedantic` doesn't chastise
-            // us, so let's just go with it.
             if (character == 0) {
                 break;
             }
-            printf("%c", character);
+            printf("%c", toupper(character));
         }
         printf("\n");
     }
