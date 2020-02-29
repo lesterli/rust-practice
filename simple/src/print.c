@@ -17,10 +17,16 @@
 int main(int argc, char **argv) {
     for (int i = 0; i < argc; i++) {
         char *arg = argv[i];
-        // we don't know where to stop, so let's just print 15 characters.
-        for (int j = 0; j < 15; j++) {
+        // note: the loop condition is gone, we just loop forever.
+        // well, until a 'break' at least.
+        for (int j = 0;; j++) {
             char character = arg[j];
-            // the %c specifier is for characters
+            // technically, we ought to use '\0' rather than just 0,
+            // but even `gcc -Wall -Wextra -Wpedantic` doesn't chastise
+            // us, so let's just go with it.
+            if (character == 0) {
+                break;
+            }
             printf("%c", character);
         }
         printf("\n");
