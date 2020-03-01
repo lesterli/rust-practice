@@ -1,13 +1,8 @@
-// in `woops.c`
-
 #include <stdio.h>
 
 int len(char *s) {
-    int l = 0;
-    while (s[l]) {
-        l++;
-    }
-    return l;
+    s[0] = '\0';
+    return 0;
 }
 
 int main(int argc, char **argv) {
