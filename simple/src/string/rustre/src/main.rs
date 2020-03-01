@@ -4,8 +4,8 @@ fn main() {
         .next()
         .expect("should have one argument");
 
-    for c in arg.chars() {
-        print!("{} (U+{:04X}) ", c, c as u32);
+    for b in arg.bytes() {
+        print!("{:02X} ", b);
     }
     println!()
 }
