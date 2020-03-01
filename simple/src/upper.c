@@ -82,6 +82,8 @@ void decode_utf8(char *src, uint32_t *dst) {
     }
 }
 
+#include <ctype.h> // toupper
+
 int main(int argc, char **argv) {
     uint32_t scalars[1024]; // hopefully that's enough
     decode_utf8(argv[1], scalars);
@@ -93,6 +95,45 @@ int main(int argc, char **argv) {
         printf("U+%04X ", scalars[i]);
     }
     printf("\n");
+
+    // this is the highest codepoint we can decode/encode successfully
+    const size_t table_size = 0b11111111111;
+    uint32_t lower_to_upper[table_size];
+    // initialize the table to just return the codepoint unchanged
+    for (uint32_t cp = 0; cp < table_size; cp++) {
+        lower_to_upper[cp] = cp;
+    }
+    // set a-z => A-Z
+    for (int c = 97; c <= 122; c++) { // ha.
+        lower_to_upper[(uint32_t) c] = (uint32_t) toupper(c);
+    }
+
+    // note: nested functions is a GNU extension!
+    void set(char *lower, char *upper) {
+        uint32_t lower_s[1024];
+        uint32_t upper_s[1024];
+        decode_utf8(lower, lower_s);
+        decode_utf8(upper, upper_s);
+        for (int i = 0;; i++) {
+            if (lower_s[i] == 0) {
+                break;
+            }
+            lower_to_upper[lower_s[i]] = upper_s[i];
+        }
+    }
+    // set a few more
+    set(
+        "éêèàâëüöïÿôîçæœ",
+        "ÉÊÈÀÂËÜÖÏŸÔÎÇÆŒ"
+    );
+
+    // now convert our scalars to upper-case
+    for (int i = 0;; i++) {
+        if (scalars[i] == 0) {
+            break;
+        }
+        scalars[i] = lower_to_upper[scalars[i]];
+    }
 
     uint8_t result[1024]; // yolo
     encode_utf8(scalars, result);
