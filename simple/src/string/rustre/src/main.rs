@@ -3,5 +3,9 @@ fn main() {
         .skip(1)
         .next()
         .expect("should have one argument");
-    println!("{:?}", arg)
+
+    match arg.to_str() {
+        Some(arg) => println!("valid UTF-8: {}", arg),
+        None => println!("not valid UTF-8: {:?}", arg),
+    }
 }
