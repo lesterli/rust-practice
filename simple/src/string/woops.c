@@ -1,12 +1,20 @@
-#include <stdio.h>
+// in `woops.c`
 
-int len(char *s) {
-    s[0] = '\0';
-    return 0;
+#include <stdio.h>
+#include <ctype.h>
+
+void uppercase(char *s) {
+    // this is peak C right there
+    do {
+        *s = toupper(*s);
+    } while (*s++);
 }
 
 int main(int argc, char **argv) {
     char *arg = argv[1];
-    int l = len(arg);
-    printf("length of \"%s\" = %d\n", arg, l);
+
+    char *upp = arg;
+    uppercase(upp);
+
+    printf("upp = %s\n", upp);
 }
