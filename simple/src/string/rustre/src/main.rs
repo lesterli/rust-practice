@@ -4,10 +4,10 @@ fn main() {
         .next()
         .expect("should have one argument");
 
-    println!("upp = {}", uppercase(arg.clone()));
+    println!("upp = {}", uppercase(&arg));
     println!("arg = {}", arg);
 }
 
-fn uppercase(s: String) -> String {
+fn uppercase(s: &str) -> String {
     s.to_uppercase()
 }
