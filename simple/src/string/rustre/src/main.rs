@@ -5,7 +5,7 @@ fn main() {
         .expect("should have one argument");
 
     for c in arg.chars() {
-        print!("{} ", c);
+        print!("{} (U+{:04X}) ", c, c as u32);
     }
     println!()
 }
