@@ -4,6 +4,45 @@
 #include <stdint.h> // uint8_t, uint32_t
 #include <stdlib.h> // exit
 
+void encode_utf8(uint32_t *src, char *dst) {
+    int i = 0;
+    int j = 0;
+
+    while (1) {
+        uint32_t scalar = src[i];
+
+        if (scalar == 0) {
+            dst[j] = 0; // null terminator
+            break;
+        }
+
+        if (scalar > 0b11111111111) {
+            fprintf(stderr, "Can only encode codepoints <= 0x%x", 0b11111111111);
+            exit(1);
+        }
+
+        if (scalar > 0b1111111) { // 7 bits
+            // 2-byte sequence
+
+            uint8_t b1 = 0b11000000 | ((uint8_t) ((scalar & 0b11111000000) >> 6));
+            //           2-byte marker              first 5 of 11 bits
+
+            uint8_t b2 = 0b10000000 | ((uint8_t) (scalar & 0b111111));
+            //           continuation               last 6 of 11 bits  
+
+            dst[j + 0] = b1;
+            dst[j + 1] = b2;
+            j += 2;
+        } else {
+            // 1-byte sequence
+            dst[j] = (char) scalar;
+            j++;
+        }
+
+        i++;
+    }
+}
+
 void decode_utf8(char *src, uint32_t *dst) {
     int i = 0;
     int j = 0;
@@ -54,6 +93,11 @@ int main(int argc, char **argv) {
         printf("U+%04X ", scalars[i]);
     }
     printf("\n");
+
+    uint8_t result[1024]; // yolo
+    encode_utf8(scalars, result);
+
+    printf("%s\n", result);
 
     return 0;
 }
