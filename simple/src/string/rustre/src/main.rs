@@ -1,15 +1,11 @@
 fn main() {
-    let arg = std::env::args()
-        .skip(1)
-        .next()
-        .expect("should have one argument");
-
-    let mut upp = String::new();
-    // was just `upp`
-    uppercase(&arg, &mut upp);
-
-    println!("upp = {}", upp);
-    println!("arg = {}", arg);
+    let mut upp = String::with_capacity(512);
+    for arg in std::env::args().skip(1) {
+        upp.clear();
+        uppercase(&arg, &mut upp);
+        println!("upp = {}", upp);
+        println!("arg = {}", arg);
+    }
 }
 
 // was `mut dst: String`
