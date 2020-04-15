@@ -1,0 +1,1 @@
+void call_from_rust();
