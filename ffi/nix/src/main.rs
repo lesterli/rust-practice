@@ -1,5 +1,3 @@
-extern crate nix;
-
 // use nix::unistd::*;
 
 // fn main() {
