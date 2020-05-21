@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 libc = "0.2"
+libloading = "0.6.2"
