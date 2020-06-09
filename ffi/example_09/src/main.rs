@@ -1,15 +1,5 @@
 use std::ffi::CString;
 use std::os::raw::{c_float, c_int};
-use std::slice;
-
-
-// #[derive(Debug)]
-// pub struct Student {
-//     pub num: i32,
-//     pub total: i32,
-//     pub name: String,
-//     pub scores: Vec<f32>,
-// }
 
 #[repr(C)]
 #[derive(Debug)]
@@ -21,7 +11,8 @@ pub struct CStudent {
 }
 
 impl CStudent {
-    pub fn new(name: String, scores: Vec<f32>) -> CStudent {
+    // constructor with parameters
+    pub fn new(num: i32, total: i32, name: String, scores: Vec<f32>) -> CStudent {
         let c_string = CString::new(name).expect("CString::new failed");
         let bytes = c_string.as_bytes_with_nul();
         
@@ -38,38 +29,54 @@ impl CStudent {
         }
 
         CStudent {
-            num: 1 as c_int,
-            total: 100 as c_int,
+            num,
+            total,
             name: c_name,
             scores: c_scores,
         }
     }
 }
 
+// Default constructor
+impl Default for CStudent {
+    fn default() -> Self {
+        CStudent {
+            num: 1 as c_int,
+            total: 100 as c_int,
+            name: [0u8; 20],
+            scores: [0.0 as c_float; 3],            
+        }
+    }
+}
 
 #[link(name = "cfoo")]
 extern "C" {
-    // fn create_students(n: c_int) -> *mut Student;
     fn print_students(p_stu: *mut CStudent, n: c_int);
-    // fn release_students(p_stu: *mut Student);
+    fn fill_data(p_stu: *mut CStudent);
 }
-
 
 
 fn main() {
     let n = 1;
+    let total = 100;
     let alice = String::from("Alice");
+    let alice_num = 1;
     let alice_scores = vec![30.0, 60.0, 90.0];
-    let c_stu = CStudent::new(alice, alice_scores);
+    let c_stu = CStudent::new(alice_num, total, alice, alice_scores);
+    println!("rust side print Alice: {:?}", c_stu);
     let box_c_stu = Box::new(c_stu);
     let p_stu = Box::into_raw(box_c_stu);
+
     unsafe {
-
-        let s: &mut [CStudent] = slice::from_raw_parts_mut(p_stu, n as usize);
-        println!("rust side print: {:?}", s);
         print_students(p_stu, n as c_int);
-
-        // release_students(p_stu);
     }
 
+    let new_stu: CStudent = Default::default();
+    println!("rust side print new_stu: {:?}", new_stu);
+    let box_new_stu = Box::new(new_stu);
+    let p_stu = Box::into_raw(box_new_stu);
+
+    unsafe {
+        fill_data(p_stu);
+    }
 }

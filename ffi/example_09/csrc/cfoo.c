@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 typedef struct Student
 {
@@ -9,22 +10,18 @@ typedef struct Student
     float scores[3];
 } Student;
 
-// Student *create_students(int n)
-// {
-//     if (n <= 0)
-//         return NULL;
+void fill_data(Student* stu)
+{
+    stu->num = 2;
+    stu->total = 100;
+    strcpy(stu->name, "Bob");
+    stu->scores[0] = 60.6;
+    stu->scores[1] = 70.7;
+    stu->scores[2] = 80.8;
 
-//     Student *stu = NULL;
-//     stu = (Student *)malloc(sizeof(Student) * n);
-
-//     return stu;
-// }
-
-// void release_students(Student *stu)
-// {
-//     if (stu != NULL)
-//         free(stu);
-// }
+    printf("C side print: %d %s %d %.2f %.2f %.2f\n",
+           stu->num, stu->name, stu->total, stu->scores[0], stu->scores[1], stu->scores[2]);
+}
 
 void print_students(Student *stu, int n)
 {
