@@ -41,8 +41,8 @@ impl CStudent {
 impl Default for CStudent {
     fn default() -> Self {
         CStudent {
-            num: 1 as c_int,
-            total: 100 as c_int,
+            num: 0 as c_int,
+            total: 0 as c_int,
             name: [0u8; 20],
             scores: [0.0 as c_float; 3],            
         }
@@ -51,13 +51,12 @@ impl Default for CStudent {
 
 #[link(name = "cfoo")]
 extern "C" {
-    fn print_students(p_stu: *mut CStudent, n: c_int);
-    fn fill_data(p_stu: *mut CStudent);
+    fn print_students(p_stu: *mut CStudent);
+    fn fill_data(p_stu: *mut CStudent) -> *mut CStudent;
 }
 
 
 fn main() {
-    let n = 1;
     let total = 100;
     let alice = String::from("Alice");
     let alice_num = 1;
@@ -68,15 +67,16 @@ fn main() {
     let p_stu = Box::into_raw(box_c_stu);
 
     unsafe {
-        print_students(p_stu, n as c_int);
+        print_students(p_stu);
     }
 
     let new_stu: CStudent = Default::default();
     println!("rust side print new_stu: {:?}", new_stu);
     let box_new_stu = Box::new(new_stu);
-    let p_stu = Box::into_raw(box_new_stu);
+    let mut p_stu = Box::into_raw(box_new_stu);
 
     unsafe {
-        fill_data(p_stu);
+        p_stu = fill_data(p_stu);
+        println!("rust side print Bob: {:?}", Box::from_raw(p_stu));
     }
 }

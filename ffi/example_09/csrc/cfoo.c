@@ -10,7 +10,7 @@ typedef struct Student
     float scores[3];
 } Student;
 
-void fill_data(Student* stu)
+Student* fill_data(Student *stu)
 {
     stu->num = 2;
     stu->total = 100;
@@ -21,19 +21,17 @@ void fill_data(Student* stu)
 
     printf("C side print: %d %s %d %.2f %.2f %.2f\n",
            stu->num, stu->name, stu->total, stu->scores[0], stu->scores[1], stu->scores[2]);
+    return stu;
 }
 
-void print_students(Student *stu, int n)
+void print_students(Student *stu)
 {
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        printf("C side print: %d %s %d %.2f %.2f %.2f\n",
-               stu[i].num,
-               stu[i].name,
-               stu[i].total,
-               stu[i].scores[0],
-               stu[i].scores[1],
-               stu[i].scores[2]);
-    }
+    printf("C side print: %d %s %d %.2f %.2f %.2f\n",
+            stu->num,
+            stu->name,
+            stu->total,
+            stu->scores[0],
+            stu->scores[1],
+            stu->scores[2]);
+    
 }
