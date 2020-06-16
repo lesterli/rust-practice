@@ -20,18 +20,12 @@ Student* fill_data(Student *stu)
     stu->scores[2] = 80.8;
 
     printf("C side print: %d %s %d %.2f %.2f %.2f\n",
-           stu->num, stu->name, stu->total, stu->scores[0], stu->scores[1], stu->scores[2]);
-    return stu;
-}
+           stu->num, 
+           stu->name, 
+           stu->total, 
+           stu->scores[0], 
+           stu->scores[1], 
+           stu->scores[2]);
 
-void print_students(Student *stu)
-{
-    printf("C side print: %d %s %d %.2f %.2f %.2f\n",
-            stu->num,
-            stu->name,
-            stu->total,
-            stu->scores[0],
-            stu->scores[1],
-            stu->scores[2]);
-    
+    return stu;
 }

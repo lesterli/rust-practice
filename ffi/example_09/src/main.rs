@@ -51,25 +51,12 @@ impl Default for CStudent {
 
 #[link(name = "cfoo")]
 extern "C" {
-    fn print_students(p_stu: *mut CStudent);
     fn fill_data(p_stu: *mut CStudent) -> *mut CStudent;
 }
 
 
 fn main() {
-    let total = 100;
-    let alice = String::from("Alice");
-    let alice_num = 1;
-    let alice_scores = vec![30.0, 60.0, 90.0];
-    let c_stu = CStudent::new(alice_num, total, alice, alice_scores);
-    println!("rust side print Alice: {:?}", c_stu);
-    let box_c_stu = Box::new(c_stu);
-    let p_stu = Box::into_raw(box_c_stu);
-
-    unsafe {
-        print_students(p_stu);
-    }
-
+    // Initialization of allocated memory
     let new_stu: CStudent = Default::default();
     println!("rust side print new_stu: {:?}", new_stu);
     let box_new_stu = Box::new(new_stu);
