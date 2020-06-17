@@ -10,7 +10,7 @@ typedef struct Student
     float scores[3];
 } Student;
 
-Student* fill_data(Student *stu)
+void fill_data(Student *stu)
 {
     stu->num = 2;
     stu->total = 100;
@@ -26,6 +26,4 @@ Student* fill_data(Student *stu)
            stu->scores[0], 
            stu->scores[1], 
            stu->scores[2]);
-
-    return stu;
 }

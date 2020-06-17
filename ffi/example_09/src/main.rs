@@ -51,7 +51,7 @@ impl Default for CStudent {
 
 #[link(name = "cfoo")]
 extern "C" {
-    fn fill_data(p_stu: *mut CStudent) -> *mut CStudent;
+    fn fill_data(p_stu: *mut CStudent);
 }
 
 
@@ -60,10 +60,10 @@ fn main() {
     let new_stu: CStudent = Default::default();
     println!("rust side print new_stu: {:?}", new_stu);
     let box_new_stu = Box::new(new_stu);
-    let mut p_stu = Box::into_raw(box_new_stu);
+    let p_stu = Box::into_raw(box_new_stu);
 
     unsafe {
-        p_stu = fill_data(p_stu);
+        fill_data(p_stu);
         println!("rust side print Bob: {:?}", Box::from_raw(p_stu));
     }
 }
