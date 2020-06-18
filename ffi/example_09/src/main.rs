@@ -51,6 +51,7 @@ impl Default for CStudent {
 
 #[link(name = "cfoo")]
 extern "C" {
+    fn print_data(p_stu: *mut CStudent);
     fn fill_data(p_stu: *mut CStudent);
 }
 
@@ -64,6 +65,8 @@ fn main() {
 
     unsafe {
         fill_data(p_stu);
+        print_data(p_stu);
         println!("rust side print Bob: {:?}", Box::from_raw(p_stu));
+        
     }
 }
