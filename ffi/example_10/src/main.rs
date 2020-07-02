@@ -7,7 +7,7 @@ extern {
     pub fn sum_square_cb(a: c_int, b: c_int, cb: SumSquareCB, user_data: *mut c_void);
 }
 
-unsafe extern fn trampoline<F>(result: c_int, user_data: *mut c_void)
+unsafe extern fn hook<F>(result: c_int, user_data: *mut c_void)
 where
     F: FnMut(c_int),
 {
@@ -19,7 +19,7 @@ pub fn get_callback<F>(_closure: &F) -> SumSquareCB
 where
     F: FnMut(c_int),
 {
-    trampoline::<F>
+    hook::<F>
 }
 
 #[derive(Debug, Default, Clone, PartialEq)]
