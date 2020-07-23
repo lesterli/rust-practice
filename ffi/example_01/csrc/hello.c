@@ -37,9 +37,16 @@ int main(void) {
   *(hello_h+5) = '\0';       
   *(hello_h+0) = 'H';  // No problem: String is now Hello
   printf("new string in heap is: %s\n", hello_h);
+  free(hello_h);
+
+  char *c_str = "hello";  
+  print_str(c_str); // Problem: still reachable
+  c_str = change_str(c_str); // change the previous content
+  printf("C side result: %s\n", c_str);
+  free_str(c_str);
 
   // C generate strings
-  char *c_hello = (char *)malloc(sizeof(char)*size); // Stored in heap segment
+  char *c_hello = (char *)malloc(sizeof(char)*size);
   *(c_hello+0) = 'H';  
   *(c_hello+1) = 'e';   
   *(c_hello+2) = 'l';
@@ -47,16 +54,13 @@ int main(void) {
   *(c_hello+4) = 'o'; 
   *(c_hello+5) = '\0';       
   printf("C side generate: %s\n", c_hello);
-
   print_str(c_hello);
-
-  c_hello = change_str(c_hello);
-  printf("C side result: %s\n", c_hello);
-  
+  char *c_hello_world = change_str(c_hello);
+  printf("C side result: %s\n", c_hello_world);
   free(c_hello);
-  
-  char *c_ping; 
-  c_ping = generate_str();
+  free_str(c_hello_world);
+
+  char *c_ping = generate_str();
   printf("C side print: %s\n", c_ping);
   free_str(c_ping);
 }
