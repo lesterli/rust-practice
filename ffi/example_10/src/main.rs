@@ -11,8 +11,7 @@ unsafe extern fn hook<F>(result: c_int, user_data: *mut c_void)
 where
     F: FnMut(c_int),
 {
-    let closure = &mut *(user_data as *mut F);
-    closure(result);
+    (*(user_data as *mut F))(result)
 }
 
 pub fn get_callback<F>(_closure: &F) -> SumSquareCB
