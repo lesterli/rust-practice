@@ -1,5 +1,5 @@
 [package]
-name = "ffi-secp256k1"
+name = "libsecp256k1-sys"
 version = "0.1.0"
 authors = ["ubuntu"]
 edition = "2018"
