@@ -1,4 +1,14 @@
+// We have a lot of c-types in here, stop warning about their names!
+#![allow(non_camel_case_types)]
+
 use std::os::raw::{c_char, c_float, c_int};
+
+#[repr(C)]
+#[derive(Debug)]
+pub enum gender {
+    BOY,
+    GIRL,
+}
 
 #[repr(C)]
 #[derive(Debug)]
@@ -7,6 +17,7 @@ pub struct student {
     pub total: c_int,
     pub name: [c_char; 20],
     pub scores: [c_float; 3],
+    pub gender: gender,
 }
 
 // Default constructor
@@ -16,7 +27,8 @@ impl Default for student {
             num: 0 as c_int,
             total: 0 as c_int,
             name: [0 as c_char; 20],
-            scores: [0.0 as c_float; 3],            
+            scores: [0.0 as c_float; 3],
+            gender: gender::BOY,            
         }
     }
 }
@@ -35,10 +47,11 @@ pub extern "C" fn student_alice() -> *mut student {
     }
     let scores = [92.5, 87.5, 90.0];
     let alice = student {
-        num: 001,
+        num: 1 as c_int,
         total: 280,
         name: init_char_array,
         scores,
+        gender: gender::GIRL,
     };
     Box::into_raw(Box::new(alice))
 }

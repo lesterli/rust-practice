@@ -3,3 +3,6 @@ no_includes = true
 
 [export]
 prefix = "capi_"
+
+[enum]
+rename_variants = "SnakeCase"
