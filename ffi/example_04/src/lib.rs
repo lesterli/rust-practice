@@ -10,6 +10,12 @@ pub fn count_char(s: &str) -> u32 {
     s.chars().count() as u32
 }
 
+pub fn handle_tuple(pair: (u32, bool)) -> (u32, bool) {
+    let (integer, boolean) = pair;
+
+    (integer + 1, !boolean)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -27,5 +33,11 @@ mod tests {
         assert_eq!(count_char(hello), 5);
         let hello_utf8 = "你好";
         assert_eq!(count_char(hello_utf8), 2);
+    }
+
+    #[test]
+    fn test_handle_tuple() {
+        let pair = (100, true);
+        assert_eq!(handle_tuple(pair), (101, false));
     }
 }
