@@ -16,6 +16,18 @@ pub fn handle_tuple(pair: (u32, bool)) -> (u32, bool) {
     (integer + 1, !boolean)
 }
 
+pub fn sum_of_even_fixed(array: [i32; 10]) -> i32 {
+    array.iter()
+    .filter(|&&num| num % 2 == 0)
+    .fold(0, |sum, &num| sum + num)
+}
+
+pub fn sum_of_even(slice: &[i32]) -> i32 {
+    slice.iter()
+    .filter(|&&num| num % 2 == 0)
+    .fold(0, |sum, &num| sum + num)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -39,5 +51,12 @@ mod tests {
     fn test_handle_tuple() {
         let pair = (100, true);
         assert_eq!(handle_tuple(pair), (101, false));
+    }
+
+    #[test]
+    fn test_sum_of_even() {
+        let array = [1,2,3,4,5,6,7,8,9,10];
+        assert_eq!(sum_of_even(&array), 30);
+        assert_eq!(sum_of_even(&array[..5]), 6);
     }
 }

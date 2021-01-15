@@ -15,6 +15,7 @@ ffi.cdef("""
     unsigned int fibonacci(unsigned int index);
     unsigned int count_char(const char *s);
     struct c_tuple handle_tuple(struct c_tuple tup);
+    int sum_of_even(const int *ptr, size_t len);
 """)
 
 lib = ffi.dlopen("../ffi/target/debug/libexample_04.so")
@@ -32,4 +33,9 @@ py_cdata.integer = 100
 py_cdata.boolean = True
 print('cdata = {0}, {1}'.format(py_cdata.integer, py_cdata.boolean))
 new_py_cdata = lib.handle_tuple(py_cdata[0])
-print('change cdata = {0} {1}'.format(new_py_cdata.integer, new_py_cdata.boolean))
+print('change cdata = {0}, {1}'.format(new_py_cdata.integer, new_py_cdata.boolean))
+
+
+array = ffi.new("int[]", [1, 4, 9, 16, 25])
+print 'sum_of_even from Rust: ', lib.sum_of_even(array, len(array))
+

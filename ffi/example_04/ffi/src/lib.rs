@@ -1,6 +1,8 @@
-use std::os::raw::{c_char, c_uint};
+use std::os::raw::{c_char, c_uint, c_int};
 use std::ffi::CStr;
 use std::convert::From;
+use std::slice;
+use libc::size_t;
 
 #[no_mangle]
 pub extern "C" fn fibonacci(index: c_uint) -> c_uint {
@@ -48,4 +50,17 @@ pub extern "C" fn handle_tuple(tup: c_tuple) -> c_tuple {
     let (integer, boolean) = tup.into();
 
     (integer + 1, !boolean).into()
+}
+
+#[no_mangle]
+pub extern "C" fn sum_of_even(ptr: *const c_int, len: size_t) -> c_int {
+    let slice = unsafe {
+        assert!(!ptr.is_null());
+        slice::from_raw_parts(ptr, len as usize)
+    };
+
+    let sum = slice.iter()
+    .filter(|&&num| num % 2 == 0)
+    .fold(0, |sum, &num| sum + num);
+    sum as c_int
 }
