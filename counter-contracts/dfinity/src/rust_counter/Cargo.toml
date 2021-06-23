@@ -1,0 +1,12 @@
+[package]
+name = "rust_counter"
+version = "0.1.0"
+authors = ["lesterli <lester123@live.cn>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ic-cdk = "0.3"
+ic-cdk-macros = "0.3"
