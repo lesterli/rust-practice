@@ -1,6 +1,8 @@
 mod rpc_server;
 mod rpc_client;
 
+use std::fs;
+
 use hyper::rt;
 use std::time::Duration;
 use std::net::SocketAddr;
@@ -101,15 +103,24 @@ fn example1() {
     println!("RPC Client example1: {:?}", result);
 }
 
+fn scrape_url() {
+    let url = "https://www.rust-lang.org/";
+    let output = "rust.md";
+
+    println!("Fetching url: {}", url);
+    let body = reqwest::blocking::get(url).unwrap().text().unwrap();
+
+    println!("Converting html to markdown...");
+    let md = html2md::parse_html(&body);
+
+    fs::write(output, md.as_bytes()).unwrap();
+    println!("Converted markdown has been saved in {}.", output);
+}
+
 fn main() {
-    // example
+    scrape_url();
     example();
-
     example1();
-
-    // example
     example2();
-
-    // example
     example3();
 }
