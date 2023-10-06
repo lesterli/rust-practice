@@ -1,6 +1,4 @@
-/**
- * 函数作为参数
- */
+/// 函数作为参数
 pub fn math(op: fn(i32, i32) -> i32, a: i32, b: i32) -> i32 {
     op(a,b)
 }
@@ -11,38 +9,80 @@ fn product(a: i32, b: i32) -> i32 {
     a * b
 }
 
-/**
- * 函数作为返回值
- */
+/// 函数作为返回值
 fn is_true() -> bool { true }
 pub fn true_maker() -> fn() -> bool { is_true }
 
-/**
- * CTFE编译时函数执行
- */
+/// CTFE编译时函数执行
 const fn init_len() -> usize { return 5; }
 
-/**
- * 匿名函数闭包作为参数
- */
+/// 匿名函数闭包作为参数
 fn closure_math<F: Fn() -> i32>(op: F) -> i32 {
     // 通过添加一对圆括号，调用传入的闭包
     op()
 }
 
-/**
- * 匿名函数闭包作为返回值
- */
+/// 匿名函数闭包作为返回值
 fn two_times_impl() -> impl Fn(i32) -> i32 {
     let i = 2;
-    // 使用move转移变量i的所有权，避免悬挂指针，安全返回闭包
+    // 使用 move 转移变量 i 的所有权，避免悬挂指针，安全返回闭包
     move |j| j * i
 }
 
+/// geektime: function
+fn apply(value: i32, f: fn(i32) -> i32) -> i32 {
+    f(value)
+}
+
+fn square(value: i32) -> i32 {
+    value * value
+}
+
+fn cube(value: i32) -> i32 {
+    value * value * value
+}
+
+fn pi() -> f64 {
+    3.1415925
+}
+
+fn not_pi() {
+    // 如果最后一个表达式后添加了; 分号，隐含其返回值为 unit
+    3.1425926;
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_fn_return() {
+        assert_eq!(pi(), 3.1415925);
+        assert_eq!(not_pi(), ());
+    }
+
+    #[test]
+    fn test_apply() {
+        assert_eq!(apply(2, square), 4);
+        assert_eq!(apply(2, cube), 8);
+    }
+
+    #[test]
+    fn test_math() {
+        assert_eq!(math(sum, 2, 3), 5);
+        assert_eq!(math(product, 2, 3), 6);
+    }
+}
+
 fn main() {
+    println!("is_pi: {:?}, is_unit1: {:?}", pi(), not_pi());
+
+    println!("apply square: {}", apply(2, square));
+    println!("apply cube: {}", apply(2, cube));
+
+    // 默认函数名是函数类型，参数显式指定了函数的类型，被转换成函数指针类型
     let a = 2;
     let b = 3;
-    // 默认函数名是函数类型，math参数显式指定了函数的类型，被转换成函数指针类型
     println!("2+3={}", math(sum, a, b));
     println!("2*3={}", math(product, a, b));
     
@@ -56,9 +96,9 @@ fn main() {
     println!("array length is {}", arr.len());
 
     let out = 42;
-    // add 函数内使用外部定义的变量out，编译器会报错
+    // add 函数内使用外部定义的变量 out，编译器会报错
     // fn add(i: i32, j: i32) -> i32 { i + j + out }
-    // 匿名函数，闭包可捕获外部变量out
+    // 匿名函数，闭包可捕获外部变量 out
     let closure_annotated = |i: i32, j: i32| -> i32 { i + j + out };
     // 闭包自动推断输入和返回类型，个人觉得可读性不好
     let closure_inferred = |i, j| i + j + out;
