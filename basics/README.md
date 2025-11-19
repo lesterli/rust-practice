@@ -4,10 +4,9 @@ This folder is for beginner Rust developers. It helps you build a solid foundati
 
 ## 🎯 Goals
 
-* Basic syntax and types
+* Basic syntax
 * Memory safety model: ownership, borrowing and lifetimes
 * Generics and traits
-* Iterators and closures
 * Error handling
 * Modules and testing
 
@@ -15,7 +14,7 @@ This folder is for beginner Rust developers. It helps you build a solid foundati
 
 Each module focuses on one essential Rust concept.
 
-* `01_hello/` — Hello World & basic syntax
+* `01_hello/` — Basic syntax
 * `02_ownership/` — Ownership & borrowing
 * `03_collections/` — Vec / String / HashMap
 * `04_erro_handling/` — Option / Result error handling
