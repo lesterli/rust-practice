@@ -1,6 +1,7 @@
-# Rust 语言学习笔记
+# Rust Practice
 
-* [精简手册](https://lester123.gitbook.io/rust/)
-* [基础](./simple/README.md)
-* [实战](./head-first/README.md)
+It includes basics learning, hands-on projects, and cross-language interoperability examples.
+
+* [Basics](./basics/README.md)
+* [Hands-on](./hands-on/README.md)
 * [FFI](./ffi/README.md)
