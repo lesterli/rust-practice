@@ -11,9 +11,9 @@ By the end of this module, you should be able to:
 
 Ownership is the core discipline of heap/pointer management. Three Ownership Rules:
 
-1.  **Each value in Rust has an owner.** (the variable it's assigned to)
-2.  **There can only be one owner at a time.**
-3.  **When the owner goes out of scope, the value is dropped.** (memory is freed)
+* Each value in Rust has an owner (the variable it's assigned to).
+* There can only be one owner at a time.
+* When the owner goes out of scope, the value is dropped (memory is freed).
 
 The key differences between languages are who manages the memory in the Heap. Rust introduces a third approach between garbage collection (GC) and manual management: Rust compiler (via the borrow checker) inserts the freeing logic (the call to drop) automatically at compile time when a variable goes out of scope.
 * When a variable with data on the Heap (like a `String`) is assigned to another variable or passed to a function, the **ownership is transferred** (moved) and the original variable is invalidated.

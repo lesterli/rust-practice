@@ -5,12 +5,12 @@ This folder is for beginner Rust developers. It helps you build a solid foundati
 ## 🎯 Goals
 
 * [Basic syntax](./01_hello/README.md)
-* [Ownership and borrowing](./02_ownership/README.md)
+* [Ownership and Borrowing](./02_ownership/README.md)
 * Generics and traits
 * Error handling
 * Modules and testing
 
-[Experimental fork of TRPL](https://rust-book.cs.brown.edu/experiment-intro.html)
+References: [Experimental fork of TRPL](https://rust-book.cs.brown.edu/experiment-intro.html)
 
 ### Modules
 
