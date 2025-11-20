@@ -1,0 +1,10 @@
+[package]
+name = "async-primer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1.48.0", features = ["macros", "fs", "rt-multi-thread"], optional = true }
+
+[features]
+async-tokio = ["tokio"]
