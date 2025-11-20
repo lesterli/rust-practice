@@ -4,18 +4,20 @@ This folder is for beginner Rust developers. It helps you build a solid foundati
 
 ## 🎯 Goals
 
-* Basic syntax
-* Memory safety model: ownership, borrowing and lifetimes
+* [Basic syntax](./01_hello/README.md)
+* [Ownership and borrowing](./02_ownership/README.md)
 * Generics and traits
 * Error handling
 * Modules and testing
+
+[Experimental fork of TRPL](https://rust-book.cs.brown.edu/experiment-intro.html)
 
 ### Modules
 
 Each module focuses on one essential Rust concept.
 
 * `01_hello/` — Basic syntax
-* `02_ownership/` — Ownership & borrowing
+* `02_ownership/` — Ownership and borrowing
 * `03_collections/` — Vec / String / HashMap
 * `04_erro_handling/` — Option / Result error handling
 * `05_tests/` — Unit testing examples
