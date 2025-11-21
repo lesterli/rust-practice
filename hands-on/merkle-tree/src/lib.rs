@@ -1,7 +1,4 @@
 /// The implementation of Merkle Tree in Rust.
-
-extern crate ring;
-
 use std::convert::AsRef;
 use std::hash::Hash;
 
@@ -15,8 +12,6 @@ use ring::digest::{Algorithm, Context, Digest};
 /// # Usage example
 ///
 /// ```
-/// extern crate ring;
-///
 /// use ring::digest::{Algorithm, SHA512};
 /// use merkle_tree::MerkleTree;
 ///
@@ -58,7 +53,7 @@ impl MerkleTree {
         let mut vec = vec![];
         match index {
             Some(i) => {
-                vec.push(&self.array[(i * self.algo.output_len)..(i * self.algo.output_len + self.algo.output_len)]);
+                vec.push(&self.array[(i * self.algo.output_len())..(i * self.algo.output_len() + self.algo.output_len())]);
                 Some(self.add_level(0, i, self.items_count, vec))
             }
             None => None
@@ -69,8 +64,8 @@ impl MerkleTree {
         let mut result = None;
         // linear search item in a loop
         for index in 0..self.items_count {
-            let start = index * self.algo.output_len;
-            if hash.as_slice() == &self.array[start..(start + self.algo.output_len)] {
+            let start = index * self.algo.output_len();
+            if hash.as_slice() == &self.array[start..(start + self.algo.output_len())] {
                 result = Some(index);
                 break;
             }
@@ -84,14 +79,14 @@ impl MerkleTree {
         let (sibling, parent) = calculate_relatives(index);
         //Add sibling to result
         result.push(&self.array[
-            (start_index + sibling * self.algo.output_len)..(start_index + sibling * self.algo.output_len + self.algo.output_len)
+            (start_index + sibling * self.algo.output_len())..(start_index + sibling * self.algo.output_len() + self.algo.output_len())
             ]);
         let next_level_len = level_len / 2;
         // Do not include root to proof
         if next_level_len == 1 { 
             return result;
         }
-        self.add_level(start_index + level_len * self.algo.output_len, parent, next_level_len, result)
+        self.add_level(start_index + level_len * self.algo.output_len(), parent, next_level_len, result)
     }
 
     pub fn is_empty(&self) -> bool {
@@ -102,12 +97,12 @@ impl MerkleTree {
         if self.is_empty() {
             return &[];
         }
-        let root_index = self.array.len() - self.algo.output_len;
+        let root_index = self.array.len() - self.algo.output_len();
         &self.array[root_index..] // Last item
     }
 
     pub fn nodes_count(&self) -> usize {
-        self.array.len() / self.algo.output_len
+        self.array.len() / self.algo.output_len()
     }
 
     pub fn leafs_count(&self) -> usize {
@@ -170,14 +165,14 @@ fn calculate_vec_len(len: usize, algo: &'static Algorithm) -> usize {
         result += level;
     }
     //output_len is the length of a finalized digest
-    result * algo.output_len
+    result * algo.output_len()
 }
 
 /// Return tree weight and build nodes
 fn build_level(tree: &mut Vec<u8>, prev_level_start: usize, mut prev_level_len: usize, algo: &'static Algorithm) -> usize {
     if prev_level_len & 1 == 1 {
         //Previous level has odd number of children
-        let prev = &tree[(prev_level_start * algo.output_len + (prev_level_len - 1) * algo.output_len)..]
+        let prev = &tree[(prev_level_start * algo.output_len() + (prev_level_len - 1) * algo.output_len())..]
             .to_owned();
         //Duplicate last item
         tree.extend_from_slice(prev); 
@@ -185,9 +180,9 @@ fn build_level(tree: &mut Vec<u8>, prev_level_start: usize, mut prev_level_len: 
     }
     let level_len = prev_level_len / 2;
     for i in 0..level_len {
-        let begin = prev_level_start * algo.output_len + i * 2 * algo.output_len;
-        let middle = begin + algo.output_len;
-        let end = middle + algo.output_len;
+        let begin = prev_level_start * algo.output_len() + i * 2 * algo.output_len();
+        let middle = begin + algo.output_len();
+        let end = middle + algo.output_len();
         let hash = get_pair_hash(
             &tree[begin..middle], //Left node
             &tree[middle..end], //Right node
@@ -257,7 +252,7 @@ mod tests {
         assert_eq!(false, tree.is_empty());
         assert_eq!(3, tree.height());
         assert_eq!(7, tree.nodes_count());
-        assert_eq!(7 * ALGO.output_len, tree.data_size());
+        assert_eq!(7 * ALGO.output_len(), tree.data_size());
         assert_eq!(_pair.as_ref(), tree.get_root());
     }
 
@@ -278,7 +273,7 @@ mod tests {
         assert_eq!(false, tree.is_empty());
         assert_eq!(3, tree.height());
         assert_eq!(7, tree.nodes_count());
-        assert_eq!(7 * ALGO.output_len, tree.data_size());
+        assert_eq!(7 * ALGO.output_len(), tree.data_size());
         assert_eq!(_pair.as_ref(), tree.get_root());
     }
 
@@ -299,7 +294,7 @@ mod tests {
         assert_eq!(false, tree.is_empty());
         assert_eq!(3, tree.height());
         assert_eq!(7, tree.nodes_count());
-        assert_eq!(7 * ALGO.output_len, tree.data_size());
+        assert_eq!(7 * ALGO.output_len(), tree.data_size());
         assert_eq!(_pair.as_ref(), tree.get_root());
     }
 

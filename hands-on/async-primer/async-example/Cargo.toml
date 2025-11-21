@@ -1,9 +1,0 @@
-[package]
-name = "async-example"
-version = "0.1.0"
-authors = ["lesterli <lester123@live.cn>"]
-edition = "2018"
-
-[dependencies]
-futures = "0.3.4"
-async-std = "1.5.0"

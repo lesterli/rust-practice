@@ -9,11 +9,15 @@ For example, there are four items, merkle tree is kept like:
 
 While building a tree, if there is an odd number of nodes at the given level, the last node will be duplicated.
 
-## Usage example
+### Run unit tests
+
+```bash
+cargo test
+```
+
+### Usage example
 
 ```Rust
-extern crate ring;
-
 use ring::digest::{Algorithm, SHA512};
 use merkle_tree::MerkleTree;
 

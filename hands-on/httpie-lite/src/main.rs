@@ -6,7 +6,7 @@ use reqwest::{header, Client, Response, Url};
 use std::{collections::HashMap, str::FromStr};
 use syntect::{
     easy::HighlightLines,
-    highlighting::{ThemeSet, Style},
+    highlighting::{ThemeSet},
     parsing::SyntaxSet,
     util::{as_24_bit_terminal_escaped, LinesWithEndings},
 };
@@ -110,19 +110,38 @@ fn print_syntect(s: &str, ext: &str) {
     // Load these once at the start of your program
     let ps = SyntaxSet::load_defaults_newlines();
     let ts = ThemeSet::load_defaults();
-    let syntax = ps.find_syntax_by_extension(ext).unwrap();
-    let mut h = HighlightLines::new(syntax, &ts.themes["base16-ocean.dark"]);
-    for line in LinesWithEndings::from(s) {
-        let ranges: Vec<(Style, &str)> = h.highlight_line(line, &ps).unwrap();
-        let escaped = as_24_bit_terminal_escaped(&ranges[..], true);
-        print!("{}", escaped);
+
+    // find syntax by extension; if not found, fallback to plain print
+    if let Some(syntax) = ps.find_syntax_by_extension(ext) {
+        // choose theme if available, else fallback
+        let theme = ts.themes.get("base16-ocean.dark");
+        if let Some(theme) = theme {
+            let mut h = HighlightLines::new(syntax, theme);
+            for line in LinesWithEndings::from(s) {
+                match h.highlight_line(line, &ps) {
+                    Ok(ranges) => {
+                        let escaped = as_24_bit_terminal_escaped(&ranges[..], true);
+                        print!("{}", escaped);
+                    }
+                    Err(_) => {
+                        // highlight failure for this line -> print raw line
+                        print!("{}", line);
+                    }
+                }
+            }
+            return;
+        }
     }
+
+    // fallback: plain print when syntax or theme not found
+    print!("{}", s);
 }
 
 fn get_content_type(resp: &Response) -> Option<Mime> {
     resp.headers()
         .get(header::CONTENT_TYPE)
-        .map(|v| v.to_str().unwrap().parse().unwrap())
+        .and_then(|v| v.to_str().ok()) // avoid panics on invalid header bytes
+        .and_then(|s| s.parse().ok())  // avoid panics on invalid mime parsing
 }
 
 async fn print_resp(resp: Response) -> Result<()> {
