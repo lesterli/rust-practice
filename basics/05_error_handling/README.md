@@ -75,14 +75,14 @@ The **`cargo test`** command automatically discovers and runs all tests in your 
 
 Run exercises:
 
-```rust
+```bash
 cd basics/05_error_handling
 cargo run
 ```
 
 Run tests:
 
-```rust
+```bash
 cd basics/05_error_handling
 cargo test
 ```

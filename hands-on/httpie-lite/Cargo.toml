@@ -1,0 +1,13 @@
+[package]
+name = "httpie-lite"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.100"
+clap = { version = "4.5.53", features = ["derive"] }
+colored = "3.0.0"
+mime = "0.3.17"
+reqwest = { version = "0.12.24", features = ["json"] }
+syntect = "5.3.0"
+tokio = { version = "1.48.0", features = ["full"] }
