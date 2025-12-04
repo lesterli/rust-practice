@@ -10,7 +10,7 @@ core = { path = "../core" }
 clap = { version = "4.4", features = ["derive"] }
 rayon = "1.8"
 walkdir = "2.4"
-indicatif = "0.17"
+indicatif = "0.18"
 anyhow = "1.0"
 serde_json = "1.0"
 num_cpus = "1.16"
