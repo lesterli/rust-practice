@@ -6,7 +6,7 @@ use blake3::Hasher;
 /// This module provides functions to generate strong semantic hashes
 /// from normalized Rust code items, ensuring that functionally equivalent
 /// code produces the same hash regardless of formatting differences.
-
+///
 /// Generate a semantic hash from an ExtractedItem's normalized content
 ///
 /// This function creates a BLAKE3 hash of the normalized code body,

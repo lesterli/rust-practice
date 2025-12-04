@@ -68,7 +68,7 @@ impl<'ast> Normalizer<'ast> {
         }
 
         // Generate new normalized name
-        let normalized = if original.chars().next().map_or(false, |c| c.is_uppercase()) {
+        let normalized = if original.chars().next().is_some_and(|c| c.is_uppercase()) {
             // It's a type name
             let normalized = format!("T{}", self.type_counter);
             self.type_counter += 1;

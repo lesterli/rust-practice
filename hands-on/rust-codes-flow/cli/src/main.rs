@@ -134,14 +134,14 @@ fn clone_or_verify_repo(source: &str) -> anyhow::Result<PathBuf> {
         if temp_dir.exists() {
             println!("📂 Updating existing repository at {}", temp_dir.display());
             let output = std::process::Command::new("git")
-                .args(&["pull", "origin", "main"])
+                .args(["pull", "origin", "main"])
                 .current_dir(&temp_dir)
                 .output()?;
 
             if !output.status.success() {
                 println!("⚠️  Git pull failed, trying master branch...");
                 let output = std::process::Command::new("git")
-                    .args(&["pull", "origin", "master"])
+                    .args(["pull", "origin", "master"])
                     .current_dir(&temp_dir)
                     .output()?;
 
@@ -155,7 +155,7 @@ fn clone_or_verify_repo(source: &str) -> anyhow::Result<PathBuf> {
         } else {
             println!("📥 Cloning repository...");
             let output = std::process::Command::new("git")
-                .args(&["clone", "--depth", "1", source, temp_dir.to_str().unwrap()])
+                .args(["clone", "--depth", "1", source, temp_dir.to_str().unwrap()])
                 .output()?;
 
             if !output.status.success() {
@@ -200,7 +200,7 @@ fn extract_repo_name(source: &str) -> anyhow::Result<String> {
 fn get_repo_metadata(repo_path: &PathBuf) -> anyhow::Result<(String, String)> {
     // Get commit hash
     let output = std::process::Command::new("git")
-        .args(&["rev-parse", "HEAD"])
+        .args(["rev-parse", "HEAD"])
         .current_dir(repo_path)
         .output()?;
 
@@ -215,7 +215,7 @@ fn get_repo_metadata(repo_path: &PathBuf) -> anyhow::Result<(String, String)> {
 
     // Try to get remote URL
     let output = std::process::Command::new("git")
-        .args(&["remote", "get-url", "origin"])
+        .args(["remote", "get-url", "origin"])
         .current_dir(repo_path)
         .output()?;
 
