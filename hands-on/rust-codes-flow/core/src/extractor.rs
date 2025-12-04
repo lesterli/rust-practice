@@ -1,12 +1,15 @@
 use crate::models::*;
 use quote::ToTokens;
 use std::collections::HashMap;
+use std::path::Path;
 use syn::{self, visit_mut::VisitMut};
 
 /// Visitor that extracts Rust code items from AST
 pub struct ExtractVisitor<'ast> {
     pub items: Vec<ExtractedItem>,
     current_file: Option<String>,
+    repo_url: Option<String>,
+    commit_hash: Option<String>,
     current_module: Vec<String>,
     line_mapping: HashMap<usize, usize>, // byte pos -> line number
     source_lines: Vec<String>,
@@ -18,6 +21,8 @@ impl<'ast> ExtractVisitor<'ast> {
         Self {
             items: Vec::new(),
             current_file: None,
+            repo_url: None,
+            commit_hash: None,
             current_module: Vec::new(),
             line_mapping: HashMap::new(),
             source_lines: Vec::new(),
@@ -40,9 +45,10 @@ impl<'ast> ExtractVisitor<'ast> {
         }
     }
 
-    pub fn set_file_info(&mut self, file_path: String, _repo_url: String, _commit_hash: String) {
+    pub fn set_file_info(&mut self, file_path: String, repo_url: String, commit_hash: String) {
         self.current_file = Some(file_path);
-        // We'll use this in item creation
+        self.repo_url = Some(repo_url);
+        self.commit_hash = Some(commit_hash);
     }
 
     fn extract_context(&self, start_line: usize, end_line: usize) -> RagContext {
@@ -57,18 +63,32 @@ impl<'ast> ExtractVisitor<'ast> {
         let after_end = end_line + self.config.context_lines;
 
         let context_before = if before_start < start_line {
-            let lines: Vec<String> = self.source_lines
-                [before_start.saturating_sub(1)..start_line.saturating_sub(1)]
+            let lines: Vec<String> = self
+                .source_lines
+                .get(before_start.saturating_sub(1)..start_line.saturating_sub(1))
+                .unwrap_or(&[])
                 .to_vec();
-            Some(lines.join("\n"))
+            if lines.is_empty() {
+                None
+            } else {
+                Some(lines.join("\n"))
+            }
         } else {
             None
         };
 
-        let context_after = if after_end > end_line && after_end <= self.source_lines.len() {
-            let lines: Vec<String> =
-                self.source_lines[end_line..after_end.saturating_sub(1)].to_vec();
-            Some(lines.join("\n"))
+        let context_after = if after_end > end_line {
+            let max_len = self.source_lines.len();
+            // simple bounds check to prevent panic
+            let start = end_line.min(max_len);
+            let end = after_end.min(max_len);
+
+            if start < end {
+                let lines: Vec<String> = self.source_lines[start..end].to_vec();
+                Some(lines.join("\n"))
+            } else {
+                None
+            }
         } else {
             None
         };
@@ -82,9 +102,7 @@ impl<'ast> ExtractVisitor<'ast> {
 
 impl<'ast> VisitMut for ExtractVisitor<'ast> {
     fn visit_item_fn_mut(&mut self, item: &mut syn::ItemFn) {
-        // Use simpler approach - just use line 1 for now to get it compiling
-        // In a full implementation, we'd use proper span handling
-        let start_line = 1;
+        let start_line = 1; // Placeholder: Real implementation requires span-to-line mapping
         let end_line = 1;
 
         let item_meta = ItemMeta {
@@ -98,16 +116,16 @@ impl<'ast> VisitMut for ExtractVisitor<'ast> {
         let content = Content {
             signature: item.sig.clone().into_token_stream().to_string(),
             body_normalized: item.clone().into_token_stream().to_string(),
-            semantic_hash: String::new(), // Will be filled by hashing module
-            docstring: None,              // Will be filled by normalizer
-            imports: Vec::new(),          // Will be filled by normalizer
+            semantic_hash: String::new(),
+            docstring: None,
+            imports: Vec::new(),
         };
 
         let rag_context = self.extract_context(start_line, end_line);
 
         let project_context = ProjectContext {
-            repo_url: String::new(),    // Will be filled by CLI
-            commit_hash: String::new(), // Will be filled by CLI
+            repo_url: self.repo_url.clone().unwrap_or_default(),
+            commit_hash: self.commit_hash.clone().unwrap_or_default(),
             file_path: self.current_file.clone().unwrap_or_default(),
         };
 
@@ -118,12 +136,10 @@ impl<'ast> VisitMut for ExtractVisitor<'ast> {
             rag_context,
         });
 
-        // Continue visiting children
         syn::visit_mut::visit_item_fn_mut(self, item);
     }
 
     fn visit_item_impl_mut(&mut self, item: &mut syn::ItemImpl) {
-        // Use simpler approach - just use line 1 for now to get it compiling
         let start_line = 1;
         let end_line = 1;
 
@@ -146,8 +162,8 @@ impl<'ast> VisitMut for ExtractVisitor<'ast> {
         let rag_context = self.extract_context(start_line, end_line);
 
         let project_context = ProjectContext {
-            repo_url: String::new(),
-            commit_hash: String::new(),
+            repo_url: self.repo_url.clone().unwrap_or_default(),
+            commit_hash: self.commit_hash.clone().unwrap_or_default(),
             file_path: self.current_file.clone().unwrap_or_default(),
         };
 
@@ -162,7 +178,6 @@ impl<'ast> VisitMut for ExtractVisitor<'ast> {
     }
 
     fn visit_item_trait_mut(&mut self, item: &mut syn::ItemTrait) {
-        // Use simpler approach - just use line 1 for now to get it compiling
         let start_line = 1;
         let end_line = 1;
 
@@ -185,8 +200,8 @@ impl<'ast> VisitMut for ExtractVisitor<'ast> {
         let rag_context = self.extract_context(start_line, end_line);
 
         let project_context = ProjectContext {
-            repo_url: String::new(),
-            commit_hash: String::new(),
+            repo_url: self.repo_url.clone().unwrap_or_default(),
+            commit_hash: self.commit_hash.clone().unwrap_or_default(),
             file_path: self.current_file.clone().unwrap_or_default(),
         };
 
@@ -201,11 +216,9 @@ impl<'ast> VisitMut for ExtractVisitor<'ast> {
     }
 
     fn visit_item_mod_mut(&mut self, item: &mut syn::ItemMod) {
-        // Use simpler approach - just use line 1 for now to get it compiling
         let start_line = 1;
         let end_line = 1;
 
-        // Track current module for nested items
         self.current_module.push(item.ident.to_string());
 
         let item_meta = ItemMeta {
@@ -227,8 +240,8 @@ impl<'ast> VisitMut for ExtractVisitor<'ast> {
         let rag_context = self.extract_context(start_line, end_line);
 
         let project_context = ProjectContext {
-            repo_url: String::new(),
-            commit_hash: String::new(),
+            repo_url: self.repo_url.clone().unwrap_or_default(),
+            commit_hash: self.commit_hash.clone().unwrap_or_default(),
             file_path: self.current_file.clone().unwrap_or_default(),
         };
 
@@ -240,13 +253,11 @@ impl<'ast> VisitMut for ExtractVisitor<'ast> {
         });
 
         syn::visit_mut::visit_item_mod_mut(self, item);
-
-        // Pop module when done
         self.current_module.pop();
     }
 }
 
-/// Main extraction function
+/// Main extraction function taking a raw string source
 pub fn extract_items_from_source(
     source: &str,
     file_path: String,
@@ -266,15 +277,43 @@ pub fn extract_items_from_source(
     Ok(visitor.items)
 }
 
-/// Extract items from a file path
+/// Extract items from a file path using known "rustcodeflow_" pattern to normalize paths
 pub fn extract_items_from_file(
-    file_path: &std::path::Path,
+    file_path: &Path,
     repo_url: String,
     commit_hash: String,
     config: &ExtractConfig,
 ) -> CoreResult<Vec<ExtractedItem>> {
     let source = std::fs::read_to_string(file_path)?;
-    let file_path_str = file_path.to_string_lossy().to_string();
 
-    extract_items_from_source(&source, file_path_str, repo_url, commit_hash, config)
+    // Heuristic:
+    // Split path into components. Find the component starting with "rustcodeflow_".
+    // Truncate everything before it.
+    // Strip "rustcodeflow_" prefix from that specific component to get clean repo name.
+
+    let components: Vec<_> = file_path
+        .components()
+        .map(|c| c.as_os_str().to_string_lossy())
+        .collect();
+
+    let start_index = components
+        .iter()
+        .position(|c| c.starts_with("rustcodeflow_"));
+
+    let relative_path_str = if let Some(idx) = start_index {
+        // e.g. ["tmp", "x", "rustcodeflow_rust", "src", "lib.rs"] -> idx=2
+        // repo_dir = "rustcodeflow_rust" -> "rust"
+        let repo_dir = &components[idx];
+        let clean_repo_name = repo_dir.strip_prefix("rustcodeflow_").unwrap_or(repo_dir);
+
+        let mut parts = vec![clean_repo_name];
+        // Append all subsequent components
+        parts.extend(components.iter().skip(idx + 1).map(|s| s.as_ref()));
+        parts.join("/")
+    } else {
+        // Fallback: If pattern not found (e.g. local run), just normalize slashes
+        file_path.to_string_lossy().replace('\\', "/")
+    };
+
+    extract_items_from_source(&source, relative_path_str, repo_url, commit_hash, config)
 }

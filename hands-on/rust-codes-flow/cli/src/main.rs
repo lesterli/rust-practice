@@ -33,6 +33,10 @@ struct Cli {
     /// Number of parallel threads (default: logical CPUs)
     #[arg(long, default_value_t = num_cpus::get())]
     threads: usize,
+
+    /// Clean up temporary repository after processing
+    #[arg(long, default_value = "true")]
+    cleanup: bool,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -120,6 +124,19 @@ fn main() -> anyhow::Result<()> {
 
     println!("✨ Dataset generation complete!");
     println!("📁 Output: {}", cli.output.display());
+
+    // Clean up temporary repository if requested
+    if cli.cleanup && cli.source.starts_with("http") {
+        let repo_name = extract_repo_name(&cli.source)?;
+        let temp_dir = std::env::temp_dir().join(format!("rustcodeflow_{}", repo_name));
+
+        if temp_dir.exists() {
+            println!("🧹 Cleaning up temporary repository...");
+            fs::remove_dir_all(&temp_dir)
+                .map_err(|e| anyhow::anyhow!("Failed to clean up temporary repository: {}", e))?;
+            println!("✅ Temporary repository cleaned up");
+        }
+    }
 
     Ok(())
 }
