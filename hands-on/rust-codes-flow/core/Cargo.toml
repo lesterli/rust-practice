@@ -1,0 +1,21 @@
+[package]
+name = "core"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "Core library for Rust code parsing, normalization, and dataset generation"
+
+[dependencies]
+syn = { version = "2.0", features = ["full", "visit-mut", "extra-traits"] }
+quote = "1.0"
+proc-macro2 = "1.0"
+prettyplease = "0.2"
+blake3 = "1.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+thiserror = "2.0"
+hex = "0.4"
+
+[lib]
+path = "src/lib.rs"
